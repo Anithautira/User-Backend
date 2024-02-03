@@ -5,6 +5,7 @@ const cors = require('cors')
 const app = express()
 app.use(cors())
 app.use(express.json())
+//const dbUrl='mongodb+srv://anitha:<password>@cluster0.bkxcvcz.mongodb.net/'
 const dbUrl ='mongodb+srv://anitha:anithautira@cluster0.bkxcvcz.mongodb.net/?retryWrites=true&w=majority'
 const client = new MongoClient(dbUrl)
 
@@ -15,7 +16,9 @@ const port = 4000
 app.get('/', async (req, res) => {
     const client = await MongoClient.connect(dbUrl)
     try {
+        
         const db = await client.db('Gmail_Clone')
+        console.log("Connected to database");
         let users = await db.collection('All Users').find().toArray()
         res.status(200).send(users)
     }
@@ -33,6 +36,7 @@ app.get('/login/:email', async (req, res) => {
     const client = await MongoClient.connect(dbUrl)
     try {
         const db = await client.db('Gmail_Clone')
+        console.log("Connected to database");
         let user = await db.collection('All Users').aggregate([{ $match: { username: req.params.email } }]).toArray()
         if (user.length !== 0 || user.length !== 0) {
             res.status(200).send({ message: "user found", data: user })
@@ -55,7 +59,7 @@ app.get('/user/:firstName/:lastName/:securityKey', async (req, res) => {
     const client = await MongoClient.connect(dbUrl)
     try {
         const db = await client.db('Gmail_Clone')
-
+        console.log("Connected to database");
         // for forgot email flow
         let user = await db.collection('All Users').aggregate([{ $match: { firstName: req.params.firstName, lastName: req.params.lastName, securityKey: req.params.securityKey } }]).toArray()
         if (user.length !== 0) {
@@ -79,6 +83,7 @@ app.post('/signup', async (req, res) => {
     const client = await MongoClient.connect(dbUrl)
     try {
         const db = await client.db('Gmail_Clone')
+        console.log("Connected to database");
         // const salt = await bcrypt.genSalt(10)
         // const secPassword = await bcrypt.hash(req.body.password, salt)
         // req.body.password = secPassword
@@ -99,6 +104,7 @@ app.put('/updateUser/:email/:securityKey', async (req, res) => {
     const client = await MongoClient.connect(dbUrl)
     try {
         const db = await client.db('Gmail_Clone')
+        console.log("Connected to database");
         let user = await db.collection('All Users').aggregate([{ $match: { username: req.params.email, securityKey: req.params.securityKey } }]).toArray()
         if (user.length !== 0) {
             await res.status(200).send({ message: 'user found' })
@@ -123,6 +129,7 @@ app.delete('/deleteUser/:email', async (req, res) => {
     try {
         if (req.params.email) {
             const db = await client.db('Gmail_Clone')
+            console.log("Connected to database");
             let user = await db.collection('All Users').findOne({ email: req.params.email })
             if (user) {
                 let user = await db.collection('All Users').deleteOne({ email: req.params.email })
@@ -149,6 +156,7 @@ app.get('/getUser/:username', async (req, res) => {
     const client = await MongoClient.connect(dbUrl)
     try {
         const db = await client.db('Gmail_Clone')
+        console.log("Connected to database");
         let user = await db.collection('All Users').findOne({ username: req.params.username })
         res.status(200).send(user)
     }
