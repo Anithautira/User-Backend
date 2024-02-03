@@ -5,10 +5,9 @@ const cors = require('cors')
 const app = express()
 app.use(cors())
 app.use(express.json())
-const dbUrl ='mongodb+srv://anitha:anithautira@gmailclone.jguf4dm.mongodb.net/?retryWrites=true&w=majority'
+const dbUrl ='mongodb+srv://anitha:anithautira@cluster0.bkxcvcz.mongodb.net/?retryWrites=true&w=majority'
 const client = new MongoClient(dbUrl)
-//const dbUrl = 'mongodb+srv://rohit10231:rohitkaranpujari@cluster0.kjynvxt.mongodb.net/?retryWrites=true&w=majority'
-//const client = new MongoClient(dbUrl)
+
 const port = 4000
 //const bcrypt = require('bcrypt')
 
